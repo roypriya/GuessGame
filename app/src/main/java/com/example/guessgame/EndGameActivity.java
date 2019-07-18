@@ -64,6 +64,8 @@ public class EndGameActivity extends AppCompatActivity {
                     realm.commitTransaction();
                 } catch (Exception e) {
                     realm.cancelTransaction();
+
+
                     Toast.makeText(mContext, "Failure" + e, Toast.LENGTH_SHORT).show();
                 }
 
