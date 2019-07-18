@@ -49,6 +49,7 @@
         android:fontFamily="casual"
         android:text="Button"
         android:textSize="24sp"
+        android:onClick="onButton1Pressed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.097"
@@ -60,7 +61,7 @@
         android:id="@+id/option4"
         android:layout_width="170dp"
         android:layout_height="65dp"
-
+        android:onClick="onButton4Pressed"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -79,6 +80,7 @@
     <Button
         android:id="@+id/option3"
         android:layout_width="170dp"
+        android:onClick="onButton3Pressed"
         android:layout_height="65dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -99,6 +101,7 @@
         android:id="@+id/option2"
         android:layout_width="170dp"
         android:layout_height="65dp"
+        android:onClick="onButton2Pressed"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"

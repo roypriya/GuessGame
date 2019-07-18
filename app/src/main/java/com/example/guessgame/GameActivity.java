@@ -85,5 +85,26 @@ public class GameActivity extends AppCompatActivity {
         arr[n]=temp;
         int b=random.nextInt(4);
         opt[b].setText(name[n]);
+        boolean flag;
+        for (int i = 0; i < 4; i++) {
+            if (i != b) {
+                int t;
+                while (true) {
+                    flag = true;
+                    t = random.nextInt(25);
+                    for (int j = 0; j < 4; j++) {
+                        if (opt[j].getText() == name[t]) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag)
+                        break;
+                }
+                opt[i].setText(name[t]);
+            }
+        }
+        count++;
     }
+
 }

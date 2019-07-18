@@ -3,4 +3,13 @@
     <color name="colorPrimary">#77F9EE</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#B7C5FD</color>
+    <color name="Green">#0BF561</color>
+    <color name="Button1color">#FA8870</color>
+    <color name="Button2color">#9CCAFA</color>
+    <color name="Button3color">#A6FDAB</color>
+    <color name="Button4color">#F6F38C</color>
+    <color name="Red">#FF0000</color>
+    <color name="Turquoise">#40E0D0</color>
+    <color name="Lavender">#E6E6FA</color>
+    <color name="Orchid">#DA70D6</color>
 </resources>
