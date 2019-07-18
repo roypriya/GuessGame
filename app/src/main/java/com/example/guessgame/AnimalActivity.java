@@ -29,8 +29,8 @@ public class AnimalActivity extends AppCompatActivity {
     static int p = 25;
     String answer = "";
     private TextView round, guess_tv;
-    static int corr_ans = 0;
-    static int eve_corr_ans = 0;
+    private static int corr_ans = 0;
+    private static int eve_corr_ans = 0;
     final int[] arr = {
             R.drawable.bear,
             R.drawable.camel,
@@ -96,6 +96,10 @@ public class AnimalActivity extends AppCompatActivity {
         opt[2]=findViewById(R.id.option3);
         opt[3]=findViewById(R.id.option4);
         round = findViewById(R.id.text_round);
+        corr_ans = 0;
+        count = 0;
+        eve_corr_ans = 0;
+        guess = 5;
         guess_tv = findViewById(R.id.text_guess);
         question_answer();
     }
@@ -148,7 +152,7 @@ public class AnimalActivity extends AppCompatActivity {
                 disableButton();
                 correctDialog();
             } else {
-                //  endGame();
+                endGame();
             }
         } else {
             opt[0].setBackgroundColor(getResources().getColor(R.color.Red));
@@ -159,7 +163,7 @@ public class AnimalActivity extends AppCompatActivity {
             guess--;
             wrongDialog();
             if (guess == 0) {
-                // endGame();
+                endGame();
             }
         }
 
@@ -168,11 +172,12 @@ public class AnimalActivity extends AppCompatActivity {
     public void onButton2Pressed(View view) {
         if (opt[1].getText().equals(answer)) {
             opt[1].setBackgroundColor(getResources().getColor(R.color.Green));
+            eve_corr_ans++;
             if (count < 25) {
                 disableButton();
                 correctDialog();
             } else {
-                //  endGame();
+                endGame();
             }
         } else {
             opt[1].setBackgroundColor(getResources().getColor(R.color.Red));
@@ -183,7 +188,7 @@ public class AnimalActivity extends AppCompatActivity {
             guess--;
             wrongDialog();
             if (guess == 0) {
-                // endGame();
+                endGame();
             }
         }
     }
@@ -191,11 +196,12 @@ public class AnimalActivity extends AppCompatActivity {
     public void onButton3Pressed(View view) {
         if (opt[2].getText().equals(answer)) {
             opt[2].setBackgroundColor(getResources().getColor(R.color.Green));
+            eve_corr_ans++;
             if (count < 25) {
                 disableButton();
                 correctDialog();
             } else {
-                // endGame();
+                endGame();
             }
         } else {
             opt[2].setBackgroundColor(getResources().getColor(R.color.Red));
@@ -206,9 +212,8 @@ public class AnimalActivity extends AppCompatActivity {
             guess--;
             wrongDialog();
             if (guess == 0) {
-
+                endGame();
             }
-            // endGame();
         }
 
     }
@@ -216,11 +221,12 @@ public class AnimalActivity extends AppCompatActivity {
     public void onButton4Pressed(View view) {
         if (opt[3].getText().equals(answer)) {
             opt[3].setBackgroundColor(getResources().getColor(R.color.Green));
+            eve_corr_ans++;
             if (count < 25) {
                 disableButton();
                 correctDialog();
             } else {
-                //endGame();
+                endGame();
             }
         } else {
             opt[3].setBackgroundColor(getResources().getColor(R.color.Red));
@@ -232,7 +238,7 @@ public class AnimalActivity extends AppCompatActivity {
             wrongDialog();
             if (guess == 0) {
 
-                //endGame();
+                endGame();
             }
         }
     }
@@ -293,7 +299,6 @@ public class AnimalActivity extends AppCompatActivity {
         dialogCorrect.setContentView(R.layout.dialog_correct);
         dialogCorrect.setCancelable(false);
         dialogCorrect.show();
-        TextView textView = dialogCorrect.findViewById(R.id.dialogNext);
         Button buttonNext = dialogCorrect.findViewById(R.id.dialogNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,7 +314,15 @@ public class AnimalActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AnimalActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void endGame() {
+        if (eve_corr_ans > corr_ans)
+            corr_ans = eve_corr_ans;
+        Intent i = new Intent(this, EndGameActivity.class);
+        i.putExtra("scores", String.valueOf(corr_ans));
+        startActivity(i);
     }
 }
