@@ -34,12 +34,12 @@ public class EndGameActivity extends AppCompatActivity {
         exit = findViewById(R.id.button_exit);
         score = findViewById(R.id.your_score_tv);
         highScore = findViewById(R.id.highScore_tv);
-        score.setText("Your Score: " + String.valueOf(scores));
+        score.setText("Your Score: " + scores);
         String name = mSharedPreferences.getString("name", null);
         Realm realm = Realm.getDefaultInstance();
         Player playerRealmQuery = realm.where(Player.class).equalTo("name", name).findFirst();
         if (playerRealmQuery == null) {
-            highScore.setText("High Score :" + String.valueOf(scores));
+            highScore.setText("High Score :" + scores);
             realm.beginTransaction();
             try {
                 Player player = realm.createObject(Player.class, name);
@@ -51,7 +51,23 @@ public class EndGameActivity extends AppCompatActivity {
             }
         } else {
             mPlayers = realm.where(Player.class).equalTo("name", name).findAll();
+            Player player = mPlayers.get(0);
+            int highScore1 = player.getHighScore();
+            if (highScore1 >= Integer.parseInt(scores)) {
+                highScore.setText("High Score :" + String.valueOf(highScore1));
+            } else {
+                highScore.setText("High Score: " + scores);
+                realm.beginTransaction();
+                try {
+                    Player obj = realm.createObject(Player.class, name);
+                    obj.setHighScore(Integer.parseInt(scores));
+                    realm.commitTransaction();
+                } catch (Exception e) {
+                    realm.cancelTransaction();
+                    Toast.makeText(mContext, "Failure" + e, Toast.LENGTH_SHORT).show();
+                }
 
+            }
         }
 
     }
