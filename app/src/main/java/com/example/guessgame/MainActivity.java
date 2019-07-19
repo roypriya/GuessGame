@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mSharedPreferences = mContext.getSharedPreferences(ab, MODE_PRIVATE);
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString("name", Player_name.getText().toString());
+        editor.apply();
     }
     @Override
     public void onBackPressed() {

@@ -23,7 +23,7 @@ public class EndGameActivity extends AppCompatActivity {
     private TextView score, highScore;
     private EditText Player_name;
     Context mContext = this;
-    SharedPreferences mSharedPreferences = mContext.getSharedPreferences(MainActivity.ab, MODE_PRIVATE);
+    SharedPreferences mSharedPreferences;
     RealmResults<Player> mPlayers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class EndGameActivity extends AppCompatActivity {
         score = findViewById(R.id.your_score_tv);
         highScore = findViewById(R.id.highScore_tv);
         score.setText("Your Score: " + scores);
+        mSharedPreferences = mContext.getSharedPreferences(MainActivity.ab, MODE_PRIVATE);
         String name = mSharedPreferences.getString("name", null);
         Realm realm = Realm.getDefaultInstance();
         Player playerRealmQuery = realm.where(Player.class).equalTo("name", name).findFirst();
