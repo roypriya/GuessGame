@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -17,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -27,7 +29,10 @@ public class AnimalActivity extends AppCompatActivity {
     private ImageView img;
     private Button opt[]=new Button[4];
     static int p = 25;
+    ProgressBar mProgressBar;
     String answer = "";
+    static int timeValue = 15;
+    CountDownTimer mCountDownTimer;
     private TextView round, guess_tv;
     private static int corr_ans = 0;
     private static int eve_corr_ans = 0;
@@ -96,11 +101,28 @@ public class AnimalActivity extends AppCompatActivity {
         opt[2]=findViewById(R.id.option3);
         opt[3]=findViewById(R.id.option4);
         round = findViewById(R.id.text_round);
+        mProgressBar = findViewById(R.id.progressBar);
         corr_ans = 0;
         count = 0;
         eve_corr_ans = 0;
         guess = 5;
+        p = 25;
+        timeValue = 15;
         guess_tv = findViewById(R.id.text_guess);
+        mCountDownTimer = new CountDownTimer(15000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mProgressBar.setProgress(timeValue);
+                timeValue--;
+                if (timeValue == -1)
+                    endGame();
+            }
+
+            @Override
+            public void onFinish() {
+                endGame();
+            }
+        }.start();
         question_answer();
     }
 
@@ -109,6 +131,7 @@ public class AnimalActivity extends AppCompatActivity {
         round.setText("Round " + String.valueOf(count));
         guess_tv.setText("Number of Guesses Left: " + String.valueOf(guess));
         Random random=new Random();
+        //if(p>0) {
         int n = random.nextInt(p);
         img.setImageResource(arr[n]);
         int b = random.nextInt(4);
@@ -116,12 +139,12 @@ public class AnimalActivity extends AppCompatActivity {
         answer = name[n];
         int temp = arr[p - 1];
         arr[p - 1] = arr[n];
-        arr[n]=temp;
+        arr[n] = temp;
         String name1 = name[p - 1];
         name[p - 1] = name[n];
         name[n] = name1;
         p--;
-
+        timeValue = 15;
         boolean flag;
         for (int i = 0; i < 4; i++) {
             if (i != b) {
@@ -141,7 +164,9 @@ public class AnimalActivity extends AppCompatActivity {
                 opt[i].setText(name[t]);
             }
         }
-
+        mCountDownTimer.cancel();
+        mCountDownTimer.start();
+        //}
     }
 
     public void onButton1Pressed(View view) {
@@ -324,5 +349,23 @@ public class AnimalActivity extends AppCompatActivity {
         Intent i = new Intent(this, EndGameActivity.class);
         i.putExtra("scores", String.valueOf(corr_ans));
         startActivity(i);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mCountDownTimer.cancel();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mCountDownTimer.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCountDownTimer.cancel();
     }
 }

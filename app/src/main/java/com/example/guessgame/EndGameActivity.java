@@ -7,11 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import javax.security.auth.login.LoginException;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -49,6 +52,7 @@ public class EndGameActivity extends AppCompatActivity {
             } catch (Exception ex) {
                 realm.cancelTransaction();
                 Toast.makeText(mContext, "Failure" + ex, Toast.LENGTH_SHORT).show();
+                Log.i("Hello no key", "Exception" + ex);
             }
         } else {
             mPlayers = realm.where(Player.class).equalTo("name", name).findAll();
@@ -60,13 +64,14 @@ public class EndGameActivity extends AppCompatActivity {
                 highScore.setText("High Score: " + scores);
                 realm.beginTransaction();
                 try {
-                    Player obj = realm.createObject(Player.class, name);
-                    obj.setHighScore(Integer.parseInt(scores));
+                    Player obj = realm.createObject(Player.class);
+
+                    //Player obj = realm.createObject(Player.class, name);
+                    //obj.setHighScore(Integer.parseInt(scores));
                     realm.commitTransaction();
                 } catch (Exception e) {
                     realm.cancelTransaction();
-
-
+                    Log.i("Hello less score", "Exception" + e);
                     Toast.makeText(mContext, "Failure" + e, Toast.LENGTH_SHORT).show();
                 }
 

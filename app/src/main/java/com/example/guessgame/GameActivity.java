@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -20,9 +22,12 @@ public class GameActivity extends AppCompatActivity {
     private static int count = 0;
     private static int guess = 5;
     private ImageView img;
+    CountDownTimer mCountDownTimer;
     private Button opt[] = new Button[4];
     static int p = 25;
     String answer = "";
+    static int timeValue = 15;
+    ProgressBar mProgressBar;
     private TextView round, guess_tv;
     static int corr_ans = 0;
     static int eve_corr_ans = 0;
@@ -92,10 +97,25 @@ public class GameActivity extends AppCompatActivity {
         opt[3] = findViewById(R.id.option4);
         round = findViewById(R.id.text_round);
         guess_tv = findViewById(R.id.text_guess);
+        mProgressBar = findViewById(R.id.progressBar);
         count = 0;
         guess = 5;
         corr_ans = 0;
         eve_corr_ans = 0;
+        mCountDownTimer = new CountDownTimer(15000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mProgressBar.setProgress(timeValue);
+                timeValue--;
+                if (timeValue == -1)
+                    endGame();
+            }
+
+            @Override
+            public void onFinish() {
+                endGame();
+            }
+        }.start();
         question_answer();
     }
 
@@ -116,7 +136,9 @@ public class GameActivity extends AppCompatActivity {
         name[p - 1] = name[n];
         name[n] = name1;
         p--;
-
+        timeValue = 15;
+        mCountDownTimer.cancel();
+        mCountDownTimer.start();
         boolean flag;
         for (int i = 0; i < 4; i++) {
             if (i != b) {
@@ -137,6 +159,24 @@ public class GameActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCountDownTimer.cancel();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mCountDownTimer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mCountDownTimer.cancel();
     }
 
     public void onButton1Pressed(View view) {
