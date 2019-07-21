@@ -64,7 +64,12 @@ public class EndGameActivity extends AppCompatActivity {
                 highScore.setText("High Score: " + scores);
                 realm.beginTransaction();
                 try {
-                    Player obj = realm.createObject(Player.class);
+                    Player obj = new Player();
+                    obj.setHighScore(Integer.parseInt(scores));
+                    obj.setName(name);
+                    //realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(obj);
+                    //realm.commitTransaction();
 
                     //Player obj = realm.createObject(Player.class, name);
                     //obj.setHighScore(Integer.parseInt(scores));

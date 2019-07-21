@@ -269,6 +269,7 @@ public class AnimalActivity extends AppCompatActivity {
     }
 
     public void wrongDialog() {
+        mCountDownTimer.cancel();
         final Dialog dialogCorrect = new Dialog(AnimalActivity.this);
         dialogCorrect.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (dialogCorrect.getWindow() != null) {
@@ -315,6 +316,7 @@ public class AnimalActivity extends AppCompatActivity {
     }
 
     public void correctDialog() {
+        mCountDownTimer.cancel();
         final Dialog dialogCorrect = new Dialog(AnimalActivity.this);
         dialogCorrect.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (dialogCorrect.getWindow() != null) {
