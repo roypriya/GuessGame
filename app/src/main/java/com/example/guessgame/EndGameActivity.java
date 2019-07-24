@@ -67,12 +67,7 @@ public class EndGameActivity extends AppCompatActivity {
                     Player obj = new Player();
                     obj.setHighScore(Integer.parseInt(scores));
                     obj.setName(name);
-                    //realm.beginTransaction();
                     realm.copyToRealmOrUpdate(obj);
-                    //realm.commitTransaction();
-
-                    //Player obj = realm.createObject(Player.class, name);
-                    //obj.setHighScore(Integer.parseInt(scores));
                     realm.commitTransaction();
                 } catch (Exception e) {
                     realm.cancelTransaction();
@@ -92,14 +87,14 @@ public class EndGameActivity extends AppCompatActivity {
     }
 
     public void onButtonExit(View view) {
-        finish();
-        moveTaskToBack(true);
+        finishAffinity();
+        System.exit(0);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        moveTaskToBack(true);
+        finishAffinity();
+        System.exit(0);
     }
 }
