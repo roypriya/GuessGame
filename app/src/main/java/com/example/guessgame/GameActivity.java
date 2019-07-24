@@ -98,10 +98,12 @@ public class GameActivity extends AppCompatActivity {
         round = findViewById(R.id.text_round);
         guess_tv = findViewById(R.id.text_guess);
         mProgressBar = findViewById(R.id.progressBar);
-        count = 0;
-        guess = 5;
         corr_ans = 0;
+        count = 0;
         eve_corr_ans = 0;
+        guess = 5;
+        p = 25;
+        timeValue = 15;
         mCountDownTimer = new CountDownTimer(15000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -122,8 +124,9 @@ public class GameActivity extends AppCompatActivity {
     public void question_answer() {
         count++;
         round.setText("Round " + String.valueOf(count));
-        guess_tv.setText("Number of Guesses left: " + String.valueOf(guess));
+        guess_tv.setText("Number of Guesses Left: " + String.valueOf(guess));
         Random random = new Random();
+        //if(p>0) {
         int n = random.nextInt(p);
         img.setImageResource(arr[n]);
         int b = random.nextInt(4);
@@ -137,8 +140,6 @@ public class GameActivity extends AppCompatActivity {
         name[n] = name1;
         p--;
         timeValue = 15;
-        mCountDownTimer.cancel();
-        mCountDownTimer.start();
         boolean flag;
         for (int i = 0; i < 4; i++) {
             if (i != b) {
@@ -158,25 +159,9 @@ public class GameActivity extends AppCompatActivity {
                 opt[i].setText(name[t]);
             }
         }
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
         mCountDownTimer.cancel();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
         mCountDownTimer.start();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mCountDownTimer.cancel();
+        //}
     }
 
     public void onButton1Pressed(View view) {
@@ -247,9 +232,8 @@ public class GameActivity extends AppCompatActivity {
             guess--;
             wrongDialog();
             if (guess == 0) {
-
+                endGame();
             }
-            endGame();
         }
 
     }
@@ -280,6 +264,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void wrongDialog() {
+        mCountDownTimer.cancel();
         final Dialog dialogCorrect = new Dialog(GameActivity.this);
         dialogCorrect.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (dialogCorrect.getWindow() != null) {
@@ -326,6 +311,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void correctDialog() {
+        mCountDownTimer.cancel();
         final Dialog dialogCorrect = new Dialog(GameActivity.this);
         dialogCorrect.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (dialogCorrect.getWindow() != null) {
@@ -335,7 +321,6 @@ public class GameActivity extends AppCompatActivity {
         dialogCorrect.setContentView(R.layout.dialog_correct);
         dialogCorrect.setCancelable(false);
         dialogCorrect.show();
-        TextView textView = dialogCorrect.findViewById(R.id.dialogNext);
         Button buttonNext = dialogCorrect.findViewById(R.id.dialogNext);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,8 +343,26 @@ public class GameActivity extends AppCompatActivity {
     public void endGame() {
         if (eve_corr_ans > corr_ans)
             corr_ans = eve_corr_ans;
-        Intent intent = new Intent(this, EndGameActivity.class);
-        intent.putExtra("scores", String.valueOf(corr_ans));
-        startActivity(intent);
+        Intent i = new Intent(this, EndGameActivity.class);
+        i.putExtra("scores", String.valueOf(corr_ans));
+        startActivity(i);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mCountDownTimer.cancel();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mCountDownTimer.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mCountDownTimer.cancel();
     }
 }
